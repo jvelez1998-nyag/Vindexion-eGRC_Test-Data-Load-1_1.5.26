@@ -128,3 +128,130 @@ export const effectivenessColor = {
   'Needs Improvement': 'text-amber-400 bg-amber-500/10 border-amber-500/30',
   Ineffective: 'text-red-400 bg-red-500/10 border-red-500/30',
 };
+
+// --- Audit Suite ---
+
+export const auditStages = ['Planning', 'Fieldwork', 'Reporting', 'Closed'];
+
+export const auditEngagements = [
+  {
+    id: 'AUD-2026-014',
+    title: 'Q3 SOX ITGC Walkthrough',
+    type: 'Internal',
+    framework: 'SOX ITGC',
+    lead: 'R. Chen',
+    stage: 'Fieldwork',
+    progress: 62,
+    riskRating: 'Moderate',
+    startDate: '2026-06-01',
+    endDate: '2026-07-25',
+    scope: 'Change management, logical access, and job scheduling controls across the financial reporting stack.',
+    workpapers: [
+      { name: 'Change Mgmt Walkthrough', status: 'Complete' },
+      { name: 'User Access Review Sample', status: 'In Progress' },
+      { name: 'Batch Job Scheduling Test', status: 'In Progress' },
+      { name: 'Segregation of Duties Matrix', status: 'Not Started' },
+    ],
+  },
+  {
+    id: 'AUD-2026-011',
+    title: 'Third-Party Vendor Security Assessment',
+    type: 'Internal',
+    framework: 'ISO 27001',
+    lead: 'J. Kim',
+    stage: 'Reporting',
+    progress: 85,
+    riskRating: 'High',
+    startDate: '2026-05-12',
+    endDate: '2026-07-10',
+    scope: 'Security due diligence over critical-tier vendors with production data access.',
+    workpapers: [
+      { name: 'Vendor Questionnaire Analysis', status: 'Complete' },
+      { name: 'SOC 2 Report Review', status: 'Complete' },
+      { name: 'Data Flow Mapping', status: 'Complete' },
+      { name: 'Draft Report', status: 'In Progress' },
+    ],
+  },
+  {
+    id: 'AUD-2026-009',
+    title: 'PCI DSS 4.0 Readiness Review',
+    type: 'External',
+    framework: 'PCI DSS 4.0',
+    lead: 'T. Osei',
+    stage: 'Planning',
+    progress: 18,
+    riskRating: 'Moderate',
+    startDate: '2026-07-01',
+    endDate: '2026-09-15',
+    scope: 'Pre-assessment gap analysis ahead of the annual QSA on-site audit.',
+    workpapers: [
+      { name: 'Scope Confirmation Memo', status: 'In Progress' },
+      { name: 'Prior Year Findings Review', status: 'Not Started' },
+    ],
+  },
+  {
+    id: 'AUD-2026-006',
+    title: 'Regulatory Exam Simulation — Data Privacy',
+    type: 'Regulatory',
+    framework: 'GDPR / State Privacy',
+    lead: 'S. Patel',
+    stage: 'Fieldwork',
+    progress: 47,
+    riskRating: 'High',
+    startDate: '2026-06-15',
+    endDate: '2026-08-01',
+    scope: 'Simulated regulatory exam covering data subject request handling and retention practices.',
+    workpapers: [
+      { name: 'DSR Handling Sample Test', status: 'In Progress' },
+      { name: 'Retention Schedule Reconciliation', status: 'In Progress' },
+      { name: 'Policy Attestation Review', status: 'Not Started' },
+    ],
+  },
+  {
+    id: 'AUD-2025-041',
+    title: 'Annual Internal Audit Plan — IT General Controls',
+    type: 'Internal',
+    framework: 'NIST CSF',
+    lead: 'M. Alvarez',
+    stage: 'Closed',
+    progress: 100,
+    riskRating: 'Low',
+    startDate: '2026-02-01',
+    endDate: '2026-04-30',
+    scope: 'Annual review of access provisioning, backup integrity, and vulnerability management controls.',
+    workpapers: [
+      { name: 'Access Provisioning Test', status: 'Complete' },
+      { name: 'Backup Restoration Test', status: 'Complete' },
+      { name: 'Vulnerability Mgmt Review', status: 'Complete' },
+      { name: 'Final Report', status: 'Complete' },
+    ],
+  },
+];
+
+export const auditFindings = [
+  { id: 'AUD-F-241', engagement: 'AUD-2026-014', title: 'Terminated user retained system access for 14 days', severity: 'High', status: 'Open', owner: 'R. Chen', dueDate: '2026-08-05' },
+  { id: 'AUD-F-238', engagement: 'AUD-2026-014', title: 'Change tickets missing peer review evidence', severity: 'Medium', status: 'In Remediation', owner: 'R. Chen', dueDate: '2026-07-28' },
+  { id: 'AUD-F-233', engagement: 'AUD-2026-011', title: 'Vendor lacking documented incident response plan', severity: 'High', status: 'Open', owner: 'J. Kim', dueDate: '2026-07-30' },
+  { id: 'AUD-F-229', engagement: 'AUD-2026-011', title: 'Data processing addendum not executed for sub-processor', severity: 'Medium', status: 'In Remediation', owner: 'J. Kim', dueDate: '2026-07-22' },
+  { id: 'AUD-F-221', engagement: 'AUD-2026-006', title: 'Data subject request response exceeded 30-day SLA', severity: 'Medium', status: 'Open', owner: 'S. Patel', dueDate: '2026-08-10' },
+  { id: 'AUD-F-198', engagement: 'AUD-2025-041', title: 'Backup restoration test lacked formal sign-off', severity: 'Low', status: 'Closed', owner: 'M. Alvarez', dueDate: '2026-04-15' },
+];
+
+export const auditStageColor = {
+  Planning: 'text-slate-300 bg-slate-500/10 border-slate-500/30',
+  Fieldwork: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/30',
+  Reporting: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+  Closed: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+};
+
+export const auditRiskRatingColor = {
+  High: 'text-red-400 bg-red-500/10 border-red-500/30',
+  Moderate: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+  Low: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+};
+
+export const workpaperStatusColor = {
+  Complete: 'text-emerald-400',
+  'In Progress': 'text-amber-400',
+  'Not Started': 'text-slate-500',
+};

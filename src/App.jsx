@@ -6,6 +6,7 @@ import Compliance from '@/pages/Compliance';
 import Controls from '@/pages/Controls';
 import Incidents from '@/pages/Incidents';
 import Vendors from '@/pages/Vendors';
+import Audits from '@/pages/Audits';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/compliance" element={<Compliance />} />
           <Route path="/controls" element={<Controls />} />
           <Route path="/incidents" element={<Incidents />} />
+          <Route path="/audits" element={<Audits />} />
           <Route path="/vendors" element={<Vendors />} />
         </Routes>
       </Layout>

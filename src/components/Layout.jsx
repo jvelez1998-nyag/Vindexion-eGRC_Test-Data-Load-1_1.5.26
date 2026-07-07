@@ -7,6 +7,7 @@ import {
   Shield,
   Activity,
   Building2,
+  ClipboardCheck,
   Menu,
   X,
   Bell,
@@ -31,6 +32,10 @@ const navGroups = [
       { name: 'Controls Library', icon: Shield, path: '/controls' },
       { name: 'Incidents', icon: Activity, path: '/incidents' },
     ],
+  },
+  {
+    label: 'Audit & Assurance',
+    items: [{ name: 'Audit Suite', icon: ClipboardCheck, path: '/audits' }],
   },
   {
     label: 'Third Parties',
