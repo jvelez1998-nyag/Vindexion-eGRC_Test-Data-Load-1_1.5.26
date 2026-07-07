@@ -15,9 +15,9 @@ export default function AuditStagePipeline({ stage }) {
               <div
                 className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-semibold border shrink-0 ${
                   done
-                    ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
+                    ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400 shadow-[0_0_8px_1px_rgba(16,185,129,0.4)]'
                     : active
-                    ? 'bg-indigo-500/20 border-indigo-500/50 text-indigo-400'
+                    ? 'bg-sky-500/20 border-sky-500/50 text-sky-400 shadow-[0_0_8px_1px_rgba(56,130,246,0.45)]'
                     : 'bg-[#0f1623] border-[#2a3548] text-slate-600'
                 }`}
               >
