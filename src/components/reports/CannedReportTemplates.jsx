@@ -1,0 +1,281 @@
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { 
+  FileText, Download, Eye, Sparkles, Search, 
+  Shield, AlertTriangle, ClipboardCheck, TrendingUp,
+  Users, BarChart3, FileCheck, Target, Clock
+} from "lucide-react";
+import { toast } from "sonner";
+import { format } from "date-fns";
+
+const REPORT_TEMPLATES = [
+  {
+    id: "executive_summary",
+    name: "Executive Summary",
+    description: "High-level overview of GRC posture for leadership",
+    icon: TrendingUp,
+    color: "from-indigo-500/20 to-purple-500/20 border-indigo-500/30",
+    iconColor: "text-indigo-400",
+    category: "Executive",
+    sections: ["Risk Overview", "Compliance Status", "Key Metrics", "Recommendations"],
+    estimatedTime: "2-3 min"
+  },
+  {
+    id: "risk_register",
+    name: "Risk Register Report",
+    description: "Complete risk inventory with assessment and treatment",
+    icon: AlertTriangle,
+    color: "from-rose-500/20 to-orange-500/20 border-rose-500/30",
+    iconColor: "text-rose-400",
+    category: "Risk",
+    sections: ["Risk Inventory", "Heat Map", "Treatment Plans", "Trends"],
+    estimatedTime: "3-4 min"
+  },
+  {
+    id: "compliance_scorecard",
+    name: "Compliance Scorecard",
+    description: "Framework-by-framework compliance status and gaps",
+    icon: FileCheck,
+    color: "from-emerald-500/20 to-teal-500/20 border-emerald-500/30",
+    iconColor: "text-emerald-400",
+    category: "Compliance",
+    sections: ["Framework Status", "Gap Analysis", "Evidence", "Roadmap"],
+    estimatedTime: "2-3 min"
+  },
+  {
+    id: "control_effectiveness",
+    name: "Control Effectiveness Report",
+    description: "Control performance, testing results, and improvements",
+    icon: Shield,
+    color: "from-blue-500/20 to-cyan-500/20 border-blue-500/30",
+    iconColor: "text-blue-400",
+    category: "Controls",
+    sections: ["Control Status", "Test Results", "Gaps", "Remediation"],
+    estimatedTime: "3-4 min"
+  },
+  {
+    id: "audit_findings",
+    name: "Audit Findings Report",
+    description: "Findings summary, remediation status, and trends",
+    icon: ClipboardCheck,
+    color: "from-violet-500/20 to-purple-500/20 border-violet-500/30",
+    iconColor: "text-violet-400",
+    category: "Audit",
+    sections: ["Findings Summary", "Severity Analysis", "Remediation", "Trends"],
+    estimatedTime: "2-3 min"
+  },
+  {
+    id: "vendor_risk",
+    name: "Vendor Risk Assessment",
+    description: "Third-party risk profile and monitoring results",
+    icon: Users,
+    color: "from-amber-500/20 to-orange-500/20 border-amber-500/30",
+    iconColor: "text-amber-400",
+    category: "Vendors",
+    sections: ["Vendor Portfolio", "Risk Scores", "Issues", "Monitoring"],
+    estimatedTime: "2-3 min"
+  },
+  {
+    id: "incident_analysis",
+    name: "Incident Analysis Report",
+    description: "Incident trends, root causes, and lessons learned",
+    icon: Target,
+    color: "from-red-500/20 to-pink-500/20 border-red-500/30",
+    iconColor: "text-red-400",
+    category: "Incidents",
+    sections: ["Incident Summary", "Root Causes", "Response", "Prevention"],
+    estimatedTime: "2-3 min"
+  },
+  {
+    id: "quarterly_board",
+    name: "Board Report (Quarterly)",
+    description: "Comprehensive quarterly report for board presentation",
+    icon: BarChart3,
+    color: "from-cyan-500/20 to-blue-500/20 border-cyan-500/30",
+    iconColor: "text-cyan-400",
+    category: "Executive",
+    sections: ["Executive Summary", "Risk Dashboard", "Compliance", "Incidents", "Outlook"],
+    estimatedTime: "4-5 min"
+  }
+];
+
+export default function CannedReportTemplates({ data }) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [generating, setGenerating] = useState(null);
+
+  const categories = ["all", ...new Set(REPORT_TEMPLATES.map(t => t.category))];
+
+  const filteredTemplates = REPORT_TEMPLATES.filter(template => {
+    const matchesSearch = !searchQuery || 
+      template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      template.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = categoryFilter === "all" || template.category === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
+
+  const generateReport = async (template) => {
+    setGenerating(template.id);
+    try {
+      // Simulate report generation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Create report content
+      const reportContent = `
+# ${template.name}
+**Generated:** ${format(new Date(), 'PPpp')}
+
+${template.sections.map(section => `## ${section}\n\n[Content for ${section}]\n`).join('\n')}
+
+---
+*Report generated by Vindexion eGRC Hub™*
+      `.trim();
+
+      // Download as markdown
+      const blob = new Blob([reportContent], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${template.id}_${format(new Date(), 'yyyy-MM-dd')}.md`;
+      a.click();
+      
+      toast.success(`${template.name} generated successfully`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to generate report");
+    } finally {
+      setGenerating(null);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <Card className="bg-gradient-to-br from-[#1a2332] to-[#151d2e] border-[#2a3548]">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
+              <FileText className="h-5 w-5 text-blue-400" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-white">Canned Report Templates</h2>
+              <p className="text-sm text-slate-400 font-normal mt-1">Pre-built professional reports ready to generate</p>
+            </div>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {/* Search and Filter */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+              <Input
+                placeholder="Search templates..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 bg-[#0f1623] border-[#2a3548] text-white"
+              />
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              {categories.map(cat => (
+                <Button
+                  key={cat}
+                  size="sm"
+                  variant={categoryFilter === cat ? "default" : "outline"}
+                  onClick={() => setCategoryFilter(cat)}
+                  className={categoryFilter === cat ? "bg-indigo-600" : "border-[#2a3548] hover:bg-[#2a3548]"}
+                >
+                  {cat === "all" ? "All" : cat}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Template Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {filteredTemplates.map(template => {
+          const Icon = template.icon;
+          const isGenerating = generating === template.id;
+          
+          return (
+            <Card key={template.id} className="bg-[#1a2332] border-[#2a3548] hover:border-[#3a4558] transition-all group">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className={`p-3 rounded-xl bg-gradient-to-br ${template.color}`}>
+                    <Icon className={`h-6 w-6 ${template.iconColor}`} />
+                  </div>
+                  <Badge className="bg-slate-500/10 text-slate-400 text-xs">
+                    {template.category}
+                  </Badge>
+                </div>
+                <div className="mt-3">
+                  <h3 className="text-white font-semibold text-lg">{template.name}</h3>
+                  <p className="text-slate-400 text-sm mt-1">{template.description}</p>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Sections */}
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide font-semibold mb-2">Includes</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {template.sections.map((section, idx) => (
+                      <Badge key={idx} variant="outline" className="text-xs border-[#2a3548] text-slate-400">
+                        {section}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Time Estimate */}
+                <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <Clock className="h-3 w-3" />
+                  <span>~{template.estimatedTime} to generate</span>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2 pt-2">
+                  <Button 
+                    className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                    onClick={() => generateReport(template)}
+                    disabled={isGenerating}
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Sparkles className="h-4 w-4 mr-2 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="h-4 w-4 mr-2" />
+                        Generate
+                      </>
+                    )}
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    className="border-[#2a3548] hover:bg-[#2a3548]"
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      {filteredTemplates.length === 0 && (
+        <Card className="bg-[#1a2332] border-[#2a3548] p-12 text-center">
+          <FileText className="h-12 w-12 text-slate-600 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-white mb-2">No templates found</h3>
+          <p className="text-slate-500">Try adjusting your search or filters</p>
+        </Card>
+      )}
+    </div>
+  );
+}
